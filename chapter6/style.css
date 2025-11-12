@@ -1,0 +1,362 @@
+/* ===== Reset & Global Styles ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #4a90e2;
+    --secondary-color: #f39c12;
+    --success-color: #27ae60;
+    --danger-color: #e74c3c;
+    --background-color: #f5f7fa;
+    --text-color: #2c3e50;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+}
+
+/* ===== Hero Section ===== */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-balls-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.floating-ball {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    animation: float linear infinite;
+}
+
+/* 공 색상 (번호 범위별) */
+.ball-yellow { background: linear-gradient(145deg, #ffd93d, #f6c23e); }
+.ball-blue { background: linear-gradient(145deg, #4a90e2, #357abd); }
+.ball-red { background: linear-gradient(145deg, #e74c3c, #c0392b); }
+.ball-gray { background: linear-gradient(145deg, #95a5a6, #7f8c8d); }
+.ball-green { background: linear-gradient(145deg, #27ae60, #229954); }
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(var(--float-x1), var(--float-y1)) rotate(90deg);
+    }
+    50% {
+        transform: translate(var(--float-x2), var(--float-y2)) rotate(180deg);
+    }
+    75% {
+        transform: translate(var(--float-x3), var(--float-y3)) rotate(270deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(360deg);
+    }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content p {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.generate-btn {
+    padding: 18px 50px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: white;
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+}
+
+.generate-btn:hover {
+    background: #e67e22;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.generate-btn:active {
+    transform: translateY(-1px);
+}
+
+.generate-btn:disabled {
+    background: #95a5a6;
+    cursor: not-allowed;
+    transform: translateY(0);
+}
+
+/* ===== Current Numbers Section ===== */
+.current-numbers-section {
+    padding: 60px 20px;
+    text-align: center;
+    background: white;
+}
+
+.current-numbers-section h2 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.current-numbers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    min-height: 100px;
+}
+
+.lotto-ball {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    box-shadow: var(--shadow);
+    animation: popIn 0.5s ease-out;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 로또 번호 추첨 애니메이션 */
+@keyframes rolling {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    75% {
+        transform: translateY(10px);
+    }
+}
+
+.lotto-ball.rolling {
+    animation: rolling 0.1s ease-in-out infinite;
+}
+
+.lotto-ball.stop {
+    animation: popIn 0.5s ease-out;
+}
+
+.placeholder {
+    color: #95a5a6;
+    font-size: 1.1rem;
+}
+
+/* ===== History Section ===== */
+.history-section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.history-header h2 {
+    font-size: 2rem;
+    color: var(--text-color);
+}
+
+.clear-history-btn {
+    padding: 10px 25px;
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.clear-history-btn:hover {
+    background: #c0392b;
+    transform: translateY(-2px);
+}
+
+.history-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.history-item {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.history-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.history-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--background-color);
+}
+
+.history-item-time {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.delete-item-btn {
+    background: none;
+    border: none;
+    color: var(--danger-color);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+}
+
+.delete-item-btn:hover {
+    transform: scale(1.2);
+}
+
+.history-numbers {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.history-numbers .lotto-ball {
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+
+    .hero-content p {
+        font-size: 1.2rem;
+    }
+
+    .generate-btn {
+        padding: 15px 40px;
+        font-size: 1.1rem;
+    }
+
+    .floating-ball {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .lotto-ball {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .history-list {
+        grid-template-columns: 1fr;
+    }
+
+    .history-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .current-numbers {
+        gap: 10px;
+    }
+
+    .lotto-ball {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+}
