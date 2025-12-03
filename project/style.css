@@ -277,6 +277,14 @@ body {
     margin-bottom: 15px;
 }
 
+.item-image {
+    width: 3.5rem;
+    height: 3.5rem;
+    display: block;
+    margin: 0 auto 15px;
+    object-fit: contain;
+}
+
 .item-name {
     font-size: 1.1rem;
     font-weight: bold;
@@ -292,13 +300,19 @@ body {
 }
 
 .item-price::before {
-    content: '🔔 ';
+    content: '🪙 ';
 }
 
 .item-description {
     font-size: 0.9rem;
     color: var(--text-light);
-    line-height: 1.4;
+    line-height: 1.6;
+    white-space: normal;
+}
+
+.item-card:hover .item-description {
+    color: #ff6b9d;
+    font-weight: bold;
 }
 
 /* ===== Click Emoji Effect ===== */
@@ -334,7 +348,7 @@ body {
     }
 
     .category-grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 20px;
     }
 
@@ -371,7 +385,16 @@ body {
     }
 
     .category-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .category-card {
+        padding: 25px 10px;
+    }
+
+    .category-icon {
+        font-size: 2.5rem;
     }
 
     .items-grid {
