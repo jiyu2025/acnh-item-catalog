@@ -6,7 +6,7 @@
     <title>🍃 모여봐요 동물의 숲 아이템 카탈로그</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div id="homePage" class="page active">
         <!-- 헤더 -->
         <header class="header">
-            <img src="../image/logo.webp" alt="로고" class="header-logo">
+            <img src="image/logo.webp" alt="로고" class="header-logo">
             <div class="header-content">
                 <h1 class="logo">🏝️ 모여봐요 동물의 숲</h1>
                 <h1 class="logo">아이템 카탈로그</h1>
@@ -24,6 +24,12 @@
 
         <!-- 메인 카테고리 섹션 -->
         <main class="main-content">
+            <!-- 검색창 -->
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="원하는 아이템을 손쉽게 검색해보세요.">
+                <span class="search-icon">🔍</span>
+            </div>
+            
             <div class="category-grid">
                 <button class="category-card" data-category="furniture">
                     <span class="category-icon">🛋️</span>

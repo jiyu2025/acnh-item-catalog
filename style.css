@@ -34,7 +34,7 @@
 
 body {
     font-family: 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-    background-image: url('../image/bg1.jpg');
+    background-image: url('image/bg1.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -79,7 +79,7 @@ body {
 .header {
     text-align: center;
     padding: 0;
-    background-image: url('../image/bg2.jpg');
+    background-image: url('image/bg2.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -111,14 +111,18 @@ body {
 .logo {
     font-size: 2.5rem;
     font-weight: 400;
-    font-family: "Bagel Fat One", system-ui;
+    font-family: 'Do Hyeon', sans-serif;
     color: var(--dark-mint);
+    -webkit-text-stroke: 1px #2d7a6e;
+    text-stroke: 1px #2d7a6e;
 }
 
 .subtitle {
     font-size: 1.2rem;
-    font-family: "Bagel Fat One", system-ui;
+    font-family: 'Do Hyeon', sans-serif;
     color: var(--dark-mint);
+    -webkit-text-stroke: 0.5px #2d7a6e;
+    text-stroke: 0.5px #2d7a6e;
 }
 
 /* ===== Main Content ===== */
@@ -127,6 +131,52 @@ body {
     margin: 0 auto;
     padding: 60px 40px;
     background-color: var(--mint);
+}
+
+/* ===== Search Container ===== */
+.search-container {
+    margin-bottom: 30px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.search-input {
+    width: 66.67%;
+    padding: 15px 50px 15px 20px;
+    border: 5px solid var(--dark-mint);
+    display: block;
+    margin: 0 auto;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1rem;
+    color: var(--text-dark);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-icon {
+    position: absolute;
+    right: calc(16.665% + 15px);
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3rem;
+    pointer-events: none;
+    color: var(--dark-mint);
+}
+
+.search-input:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(75, 184, 172, 0.1);
+}
+
+.search-input:focus ~ .search-icon {
+    color: var(--primary-green);
+}
+
+.search-input::placeholder {
+    color: var(--text-light);
 }
 
 /* ===== Category Grid ===== */
@@ -140,7 +190,7 @@ body {
 .category-card {
     background: var(--white);
     border: none;
-    border-radius: 25px;
+    border-radius: 30px;
     padding: 40px 20px;
     text-align: center;
     cursor: pointer;
@@ -224,7 +274,7 @@ body {
     background: var(--white);
     border: none;
     padding: 12px 24px;
-    border-radius: 50px;
+    border-radius: 30px;
     font-size: 1rem;
     color: var(--text-dark);
     cursor: pointer;
@@ -238,6 +288,7 @@ body {
 }
 
 .detail-title {
+    font-family: 'Jua', sans-serif;
     font-size: 2rem;
     color: var(--white);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -252,13 +303,25 @@ body {
 /* ===== Items Grid ===== */
 .items-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .items-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .items-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .item-card {
-    background: var(--white);
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 1);
+    border-radius: 25px;
     padding: 20px;
     text-align: center;
     box-shadow: var(--shadow);
@@ -286,8 +349,9 @@ body {
 }
 
 .item-name {
-    font-size: 1.1rem;
+    font-size: 1.6rem;
     font-weight: bold;
+    font-family: 'Jua', sans-serif;
     color: var(--text-dark);
     margin-bottom: 8px;
 }
@@ -313,6 +377,18 @@ body {
 .item-card:hover .item-description {
     color: #ff6b9d;
     font-weight: bold;
+}
+
+/* ===== 검색 결과 카테고리 뱃지 ===== */
+.item-category-badge {
+    display: inline-block;
+    background: var(--primary-green);
+    color: var(--white);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
 /* ===== Click Emoji Effect ===== */
@@ -438,7 +514,7 @@ body {
 
 .variant-modal-content {
     background: var(--white);
-    border-radius: 25px;
+    border-radius: 30px;
     padding: 40px;
     max-width: 700px;
     width: 90%;
@@ -482,6 +558,7 @@ body {
 
 .modal-title {
     font-size: 1.8rem;
+    font-family: 'Jua', sans-serif;
     color: var(--text-dark);
     margin-bottom: 30px;
     text-align: center;
@@ -495,7 +572,7 @@ body {
 
 .variant-item {
     background: var(--cream);
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 20px;
     text-align: center;
 }
