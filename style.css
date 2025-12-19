@@ -776,6 +776,58 @@ body {
         font-size: 0.9rem;
         border-width: 3px;
     }
+
+    /* 모바일 캐릭터 컨테이너 위치 변경 */
+    .character-left {
+        top: 0;
+        bottom: auto;
+    }
+
+    .character-right {
+        top: 0;
+        bottom: auto;
+    }
+
+    /* 모바일 말풍선 위치 변경 */
+    .bubble-left {
+        bottom: auto;
+        top: 100%;
+        margin-bottom: 0;
+        margin-top: 5px;
+    }
+
+    .bubble-left::after,
+    .bubble-left::before {
+        bottom: auto;
+        top: -8px;
+        border-top: none;
+        border-bottom: 10px solid #88d8b0;
+    }
+
+    .bubble-left::before {
+        top: -6px;
+        border-bottom: 9px solid rgba(255, 255, 255, 0.9);
+    }
+
+    .bubble-right {
+        bottom: auto;
+        top: 100%;
+        margin-bottom: 0;
+        margin-top: 5px;
+    }
+
+    .bubble-right::after,
+    .bubble-right::before {
+        bottom: auto;
+        top: -8px;
+        border-top: none;
+        border-bottom: 10px solid #88d8b0;
+    }
+
+    .bubble-right::before {
+        top: -6px;
+        border-bottom: 9px solid rgba(255, 255, 255, 0.9);
+    }
 }
 
 @media (max-width: 480px) {
