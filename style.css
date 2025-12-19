@@ -699,7 +699,8 @@ body {
     .fixed-character-left {
         width: 80px;
         opacity: 0.7;
-        bottom: 10px;
+        top: 10px;
+        bottom: auto;
         left: 10px;
         z-index: 500;
     }
@@ -707,7 +708,8 @@ body {
     .fixed-character-right {
         width: 100px;
         opacity: 0.7;
-        bottom: 10px;
+        top: 10px;
+        bottom: auto;
         right: 10px;
         z-index: 500;
     }
@@ -719,18 +721,28 @@ body {
         max-width: 150px;
         white-space: normal;
         word-break: keep-all;
+        top: 100%;
+        bottom: auto;
+        margin-top: 10px;
+        margin-bottom: 0;
     }
 
     .speech-bubble::after {
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
-        border-top: 8px solid #88d8b0;
+        border-bottom: 8px solid #88d8b0;
+        border-top: none;
+        top: -8px;
+        bottom: auto;
     }
 
     .speech-bubble::before {
         border-left: 7px solid transparent;
         border-right: 7px solid transparent;
-        border-top: 7px solid rgba(255, 255, 255, 0.9);
+        border-bottom: 7px solid rgba(255, 255, 255, 0.9);
+        border-top: none;
+        top: -6px;
+        bottom: auto;
     }
 
     /* 모바일 위시리스트 버튼 위치 조정 */
@@ -755,6 +767,14 @@ body {
         width: 20px;
         height: 20px;
         font-size: 0.75rem;
+    }
+
+    /* 모바일 검색창 크기 조정 */
+    .search-input {
+        width: 80%;
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        border-width: 3px;
     }
 }
 
@@ -788,11 +808,13 @@ body {
     .fixed-character-left {
         width: 60px;
         opacity: 0.6;
+        top: 10px;
     }
 
     .fixed-character-right {
         width: 75px;
         opacity: 0.6;
+        top: 10px;
     }
 
     .speech-bubble {
@@ -808,6 +830,13 @@ body {
 
     .wishlist-text {
         display: none; /* 매우 작은 화면에서는 텍스트 숨김 */
+    }
+
+    /* 매우 작은 화면 검색창 조정 */
+    .search-input {
+        width: 90%;
+        padding: 10px 15px;
+        font-size: 0.85rem;
     }
 }
 
