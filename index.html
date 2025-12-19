@@ -16,9 +16,8 @@
         <header class="header">
             <img src="image/logo.webp" alt="로고" class="header-logo">
             <div class="header-content">
-                <h1 class="logo">🏝️ 모여봐요 동물의 숲</h1>
-                <h1 class="logo">아이템 카탈로그</h1>
-                <p class="subtitle">나만의 섬을 꾸미기 위한 아이템 모음</p>
+                <h1 class="logo">부엉이의 기록 🦉</h1>
+                <p class="subtitle">동물의 숲 박물관 관장 부엉의 비밀스러운 아이템 백과사전</p>
             </div>
         </header>
 
@@ -27,7 +26,6 @@
             <!-- 검색창 -->
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="원하는 아이템을 손쉽게 검색해보세요.">
-                <span class="search-icon">🔍</span>
             </div>
             
             <div class="category-grid">
@@ -71,7 +69,7 @@
 
         <!-- 푸터 -->
         <footer class="footer">
-            <p>🍃 Made with love for Animal Crossing fans 🍃</p>
+            <p>🍃본 웹사이트 '부엉이의 기록'은 비영리 목적으로 제작된 학술용 프로젝트이며,<br>'동물의 숲' 및 관련 이미지의 모든 저작권은 Nintendo에 있습니다.<br>This website is a non-profit academic project. All rights to 'Animal Crossing' and its assets belong to Nintendo. 🍃</p>
         </footer>
     </div>
 
@@ -111,6 +109,21 @@
             <h2 id="modalTitle" class="modal-title"></h2>
             <div id="variantGrid" class="variant-grid"></div>
         </div>
+    </div>
+
+    <!-- 고정된 캐릭터 이미지 -->
+    <div class="character-container character-left">
+        <div class="speech-bubble bubble-left" id="boooSpeechBubble">
+            <p>오늘 밤 유성이 떨어질까요? ✨</p>
+        </div>
+        <img src="image/booo.webp" alt="부엉이 캐릭터" class="fixed-character-left">
+    </div>
+    
+    <div class="character-container character-right">
+        <div class="speech-bubble bubble-right" id="booSpeechBubble">
+            <p>저의 백과사전을 재미있게 즐겨봐요! 🦉</p>
+        </div>
+        <img src="image/boo.webp" alt="부엉이 캐릭터" class="fixed-character-right">
     </div>
 
     <script src="script.js"></script>

@@ -177,6 +177,53 @@ const furnitureSubCategoryNames = {
 let currentMainCategory = '';
 let currentSubCategory = '';
 
+// ===== 말풍선 관련 변수 =====
+const booSpeechBubble = document.getElementById('booSpeechBubble');
+const originalBooText = '저의 백과사전을 재미있게 즐겨봐요! 🦉';
+const searchingBooText = '오! 무엇을 찾으시나요? 🔍';
+
+const boooSpeechBubble = document.getElementById('boooSpeechBubble');
+const originalBoooText = '오늘 밤 유성이 떨어질까요? ✨';
+const hoverBoooText = '당신의 섬을 빛내줄 보물이 곧 나타날 거예요! ✨';
+
+// 캐릭터 이미지 요소
+const booImage = document.querySelector('.fixed-character-right');
+const boooImage = document.querySelector('.fixed-character-left');
+const characterContainers = document.querySelectorAll('.character-container');
+
+// ===== 말풍선 및 캐릭터 활성화/비활성화 함수 =====
+function activateCharacters() {
+    // 말풍선 텍스트 변경
+    if (booSpeechBubble) {
+        booSpeechBubble.querySelector('p').textContent = searchingBooText;
+    }
+    if (boooSpeechBubble) {
+        boooSpeechBubble.querySelector('p').textContent = hoverBoooText;
+    }
+    
+    // active 클래스 추가 (크기 확대, 색상 변경, 캐릭터 튀어오르기)
+    if (booSpeechBubble) booSpeechBubble.classList.add('active');
+    if (boooSpeechBubble) boooSpeechBubble.classList.add('active');
+    if (booImage) booImage.classList.add('active');
+    if (boooImage) boooImage.classList.add('active');
+}
+
+function deactivateCharacters() {
+    // 말풍선 텍스트 복원
+    if (booSpeechBubble) {
+        booSpeechBubble.querySelector('p').textContent = originalBooText;
+    }
+    if (boooSpeechBubble) {
+        boooSpeechBubble.querySelector('p').textContent = originalBoooText;
+    }
+    
+    // active 클래스 제거 (원래대로 복원)
+    if (booSpeechBubble) booSpeechBubble.classList.remove('active');
+    if (boooSpeechBubble) boooSpeechBubble.classList.remove('active');
+    if (booImage) booImage.classList.remove('active');
+    if (boooImage) boooImage.classList.remove('active');
+}
+
 // ===== 초기화 =====
 function init() {
     // 저장된 페이지 상태 복원
@@ -214,6 +261,22 @@ function init() {
                 handleSearch(e);
             }
         });
+        
+        // 검색창 포커스 시 캐릭터 활성화
+        searchInput.addEventListener('focus', activateCharacters);
+        
+        // 검색창 블러 시 캐릭터 비활성화
+        searchInput.addEventListener('blur', deactivateCharacters);
+        
+        // 검색창 호버 시 캐릭터 활성화
+        searchInput.addEventListener('mouseenter', activateCharacters);
+        
+        // 검색창에서 마우스 벗어날 때 캐릭터 비활성화 (포커스 상태가 아닐 때만)
+        searchInput.addEventListener('mouseleave', () => {
+            if (document.activeElement !== searchInput) {
+                deactivateCharacters();
+            }
+        });
     }
 
     // 클릭 이모지 효과
@@ -225,6 +288,11 @@ function showFurnitureSubCategories() {
     homePage.classList.remove('active');
     categoryPage.classList.remove('active');
     subCategoryPage.classList.add('active');
+    
+    // 캐릭터 숨기기
+    characterContainers.forEach(container => {
+        container.style.display = 'none';
+    });
     
     currentMainCategory = 'furniture';
     currentSubCategory = '';
@@ -243,6 +311,11 @@ function showCategoryPage(category) {
     homePage.classList.remove('active');
     subCategoryPage.classList.remove('active');
     categoryPage.classList.add('active');
+    
+    // 캐릭터 숨기기
+    characterContainers.forEach(container => {
+        container.style.display = 'none';
+    });
     
     currentMainCategory = category;
     
@@ -284,6 +357,11 @@ function showHomePage() {
     categoryPage.classList.remove('active');
     subCategoryPage.classList.remove('active');
     homePage.classList.add('active');
+    
+    // 캐릭터 다시 표시
+    characterContainers.forEach(container => {
+        container.style.display = 'block';
+    });
     
     currentMainCategory = '';
     currentSubCategory = '';
@@ -455,8 +533,18 @@ function showSearchResults(results, searchTerm) {
     if (results.length === 0) {
         itemsGrid.innerHTML = `
             <div class="empty-state">
-                <div class="empty-state-icon">🔍</div>
-                <p class="empty-state-text">검색 결과가 없습니다</p>
+                <div class="empty-state-image-wrapper">
+                    <img src="image/boom.png" alt="부엉이" class="empty-state-image">
+                    <span class="exclamation exclamation-1">⚠️</span>
+                    <span class="exclamation exclamation-2">⚠️</span>
+                    <span class="exclamation exclamation-3">⚠️</span>
+                    <span class="exclamation exclamation-4">⚠️</span>
+                    <span class="exclamation exclamation-5">⚠️</span>
+                    <span class="exclamation exclamation-6">⚠️</span>
+                </div>
+                <div class="empty-state-bubble">
+                    <p>허억! 죄송합니다.<br>그 아이템은 아직 우리 박물관에 기록되지 않았군요... 💦🦉</p>
+                </div>
             </div>
         `;
         return;
@@ -558,6 +646,11 @@ function savePageState() {
 }
 
 function restorePageState() {
+    // 항상 홈페이지에서 시작하도록 수정
+    // 이전 상태 복원 기능 비활성화
+    return;
+    
+    /* 이전 상태 복원 코드 (비활성화됨)
     const savedState = localStorage.getItem('acPageState');
     if (!savedState) return;
     
@@ -579,6 +672,7 @@ function restorePageState() {
     } catch (e) {
         console.error('페이지 상태 복원 실패:', e);
     }
+    */
 }
 
 // ===== 페이지 로드 시 초기화 =====
