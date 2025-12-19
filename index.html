@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🍃 모여봐요 동물의 숲 아이템 카탈로그</title>
+    <title>🦉 부엉이의 기록</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
             <!-- 검색창 -->
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="원하는 아이템을 손쉽게 검색해보세요.">
+                <div class="recent-searches" id="recentSearches"></div>
             </div>
             
             <div class="category-grid">
@@ -110,6 +111,22 @@
             <div id="variantGrid" class="variant-grid"></div>
         </div>
     </div>
+
+    <!-- 위시리스트 모달 -->
+    <div id="wishlistModal" class="wishlist-modal">
+        <div class="wishlist-modal-content">
+            <button id="closeWishlistModal" class="close-modal">✕</button>
+            <h2 class="modal-title">나의 위시리스트 🍃</h2>
+            <div id="wishlistGrid" class="items-grid"></div>
+        </div>
+    </div>
+
+    <!-- 위시리스트 버튼 -->
+    <button class="wishlist-btn" id="wishlistBtn">
+        <span class="wishlist-icon">🍃</span>
+        <span class="wishlist-text">나의 위시리스트</span>
+        <span class="wishlist-count" id="wishlistCount">0</span>
+    </button>
 
     <!-- 고정된 캐릭터 이미지 -->
     <div class="character-container character-left">

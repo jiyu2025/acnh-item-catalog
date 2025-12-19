@@ -191,6 +191,212 @@ const booImage = document.querySelector('.fixed-character-right');
 const boooImage = document.querySelector('.fixed-character-left');
 const characterContainers = document.querySelectorAll('.character-container');
 
+// ===== 위시리스트 관리 =====
+const wishlistBtn = document.getElementById('wishlistBtn');
+const wishlistModal = document.getElementById('wishlistModal');
+const closeWishlistModal = document.getElementById('closeWishlistModal');
+const wishlistGrid = document.getElementById('wishlistGrid');
+const wishlistCount = document.getElementById('wishlistCount');
+
+function getWishlist() {
+    const wishlist = localStorage.getItem('wishlist');
+    return wishlist ? JSON.parse(wishlist) : [];
+}
+
+function saveWishlist(wishlist) {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    updateWishlistCount();
+}
+
+function toggleWishlist(itemId) {
+    let wishlist = getWishlist();
+    const index = wishlist.indexOf(itemId);
+    
+    if (index > -1) {
+        wishlist.splice(index, 1);
+    } else {
+        wishlist.push(itemId);
+        // 부엉이 반응
+        showBooReaction();
+    }
+    
+    saveWishlist(wishlist);
+    updateHeartButtons();
+}
+
+function isInWishlist(itemId) {
+    return getWishlist().includes(itemId);
+}
+
+function updateWishlistCount() {
+    const count = getWishlist().length;
+    wishlistCount.textContent = count;
+}
+
+function updateHeartButtons() {
+    document.querySelectorAll('.wishlist-heart').forEach(btn => {
+        const itemId = parseInt(btn.dataset.itemId);
+        if (isInWishlist(itemId)) {
+            btn.classList.add('active');
+            btn.textContent = '♥';
+        } else {
+            btn.classList.remove('active');
+            btn.textContent = '♡';
+        }
+    });
+}
+
+function showBooReaction() {
+    if (booSpeechBubble) {
+        const originalText = booSpeechBubble.querySelector('p').textContent;
+        booSpeechBubble.querySelector('p').textContent = '오! 정말 멋진 선택이에요!';
+        booSpeechBubble.classList.add('active');
+        
+        setTimeout(() => {
+            booSpeechBubble.querySelector('p').textContent = originalText;
+            booSpeechBubble.classList.remove('active');
+        }, 1000);
+    }
+}
+
+function openWishlistModal() {
+    const wishlist = getWishlist();
+    
+    if (wishlist.length === 0) {
+        wishlistGrid.innerHTML = `
+            <div class="wishlist-empty">
+                <img src="image/boo.webp" alt="부엉이">
+                <p class="wishlist-empty-text">아직 찜한 아이템이 없군요!</p>
+                <p class="wishlist-empty-desc">마음에 드는 아이템의 하트를 눌러보세요 🍃</p>
+            </div>
+        `;
+    } else {
+        const allItems = getAllItems();
+        const wishlistItems = allItems.filter(item => wishlist.includes(item.id));
+        
+        wishlistGrid.innerHTML = wishlistItems.map(item => `
+            <div class="item-card" data-id="${item.id}">
+                <button class="wishlist-heart active" data-item-id="${item.id}">♥</button>
+                ${item.image 
+                    ? `<img src="${item.image}" alt="${item.name}" class="item-image">` 
+                    : `<span class="item-emoji">${item.emoji || '🎁'}</span>`
+                }
+                <div class="item-category-badge">${item.categoryName}</div>
+                <h3 class="item-name">${item.name}</h3>
+                <p class="item-price">${item.price.toLocaleString()}</p>
+                <p class="item-description">${item.description}</p>
+            </div>
+        `).join('');
+        
+        attachWishlistHeartListeners();
+    }
+    
+    wishlistModal.classList.add('active');
+}
+
+function closeWishlistModalFunc() {
+    wishlistModal.classList.remove('active');
+}
+
+function getAllItems() {
+    const allItems = [];
+    
+    // 가구 아이템
+    Object.keys(furnitureSubCategories).forEach(subKey => {
+        const subInfo = furnitureSubCategoryNames[subKey];
+        furnitureSubCategories[subKey].forEach(item => {
+            allItems.push({
+                ...item,
+                categoryName: `${subInfo.emoji} ${subInfo.name}`
+            });
+        });
+    });
+    
+    // 일반 카테고리 아이템
+    Object.keys(itemsDatabase).forEach(categoryKey => {
+        const categoryName = categoryNames[categoryKey];
+        itemsDatabase[categoryKey].forEach(item => {
+            allItems.push({
+                ...item,
+                categoryName: categoryName
+            });
+        });
+    });
+    
+    return allItems;
+}
+
+function attachWishlistHeartListeners() {
+    document.querySelectorAll('.wishlist-heart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const itemId = parseInt(btn.dataset.itemId);
+            toggleWishlist(itemId);
+            
+            // 위시리스트 모달이 열려있으면 다시 렌더링
+            if (wishlistModal.classList.contains('active')) {
+                openWishlistModal();
+            }
+        });
+    });
+}
+
+// ===== 최근 검색어 관리 =====
+const recentSearchesContainer = document.getElementById('recentSearches');
+const MAX_RECENT_SEARCHES = 5;
+
+function getRecentSearches() {
+    const searches = localStorage.getItem('recentSearches');
+    return searches ? JSON.parse(searches) : [];
+}
+
+function saveRecentSearch(searchTerm) {
+    if (!searchTerm.trim()) return;
+    
+    let searches = getRecentSearches();
+    
+    // 중복 제거
+    searches = searches.filter(term => term !== searchTerm);
+    
+    // 맨 앞에 추가
+    searches.unshift(searchTerm);
+    
+    // 최대 개수 제한
+    if (searches.length > MAX_RECENT_SEARCHES) {
+        searches = searches.slice(0, MAX_RECENT_SEARCHES);
+    }
+    
+    localStorage.setItem('recentSearches', JSON.stringify(searches));
+    renderRecentSearches();
+}
+
+function renderRecentSearches() {
+    const searches = getRecentSearches();
+    
+    if (searches.length === 0) {
+        recentSearchesContainer.innerHTML = '';
+        return;
+    }
+    
+    const html = `
+        <span class="recent-searches-label">최근 검색:</span>
+        ${searches.map(term => 
+            `<span class="recent-search-tag" data-search="${term}">${term}</span>`
+        ).join('')}
+    `;
+    
+    recentSearchesContainer.innerHTML = html;
+    
+    // 클릭 이벤트 등록
+    document.querySelectorAll('.recent-search-tag').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const searchTerm = tag.dataset.search;
+            searchInput.value = searchTerm;
+            handleSearch();
+        });
+    });
+}
+
 // ===== 말풍선 및 캐릭터 활성화/비활성화 함수 =====
 function activateCharacters() {
     // 말풍선 텍스트 변경
@@ -228,6 +434,27 @@ function deactivateCharacters() {
 function init() {
     // 저장된 페이지 상태 복원
     restorePageState();
+    
+    // 최근 검색어 표시
+    renderRecentSearches();
+    
+    // 위시리스트 초기화
+    updateWishlistCount();
+    
+    // 위시리스트 버튼 이벤트
+    if (wishlistBtn) {
+        wishlistBtn.addEventListener('click', openWishlistModal);
+    }
+    if (closeWishlistModal) {
+        closeWishlistModal.addEventListener('click', closeWishlistModalFunc);
+    }
+    if (wishlistModal) {
+        wishlistModal.addEventListener('click', (e) => {
+            if (e.target === wishlistModal) {
+                closeWishlistModalFunc();
+            }
+        });
+    }
     
     // 카테고리 카드 클릭 이벤트
     categoryCards.forEach(card => {
@@ -414,6 +641,7 @@ function renderItems(category) {
     
     itemsGrid.innerHTML = items.map(item => `
         <div class="item-card" data-id="${item.id}">
+            <button class="wishlist-heart" data-item-id="${item.id}">${isInWishlist(item.id) ? '♥' : '♡'}</button>
             ${item.image 
                 ? `<img src="${item.image}" alt="${item.name}" class="item-image">` 
                 : `<span class="item-emoji">${item.emoji}</span>`
@@ -423,6 +651,23 @@ function renderItems(category) {
             <p class="item-description">${item.description}</p>
         </div>
     `).join('');
+    
+    // 하트 버튼 이벤트 등록
+    attachWishlistHeartListeners();
+    
+    // 색상 변형이 있는 아이템에 클릭 이벤트 추가
+    document.querySelectorAll('.item-card').forEach(card => {
+        const itemId = parseInt(card.dataset.id);
+        const item = items.find(i => i.id === itemId);
+        if (item && item.variants) {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', (e) => {
+                // 하트 버튼 클릭시 모달 안 열리게
+                if (e.target.closest('.wishlist-heart')) return;
+                showVariantModal(item);
+            });
+        }
+    });
 }
 
 // ===== 서브 카테고리 아이템 렌더링 =====
@@ -441,6 +686,7 @@ function renderSubCategoryItems(subCategory) {
     
     itemsGrid.innerHTML = items.map(item => `
         <div class="item-card" data-id="${item.id}">
+            <button class="wishlist-heart" data-item-id="${item.id}">${isInWishlist(item.id) ? '♥' : '♡'}</button>
             ${item.image 
                 ? `<img src="${item.image}" alt="${item.name}" class="item-image">` 
                 : `<span class="item-emoji">${item.emoji || '🛏️'}</span>`
@@ -451,26 +697,36 @@ function renderSubCategoryItems(subCategory) {
         </div>
     `).join('');
     
+    // 하트 버튼 이벤트 등록
+    attachWishlistHeartListeners();
+    
     // 색상 변형이 있는 아이템에 클릭 이벤트 추가
     document.querySelectorAll('.item-card').forEach(card => {
         const itemId = parseInt(card.dataset.id);
         const item = items.find(i => i.id === itemId);
         if (item && item.variants) {
             card.style.cursor = 'pointer';
-            card.addEventListener('click', () => showVariantModal(item));
+            card.addEventListener('click', (e) => {
+                // 하트 버튼 클릭시 모달 안 열리게
+                if (e.target.closest('.wishlist-heart')) return;
+                showVariantModal(item);
+            });
         }
     });
 }
 
 // ===== 검색 기능 =====
 function handleSearch(e) {
-    const searchTerm = e.target.value.toLowerCase().trim();
+    const searchTerm = e ? e.target.value.toLowerCase().trim() : searchInput.value.toLowerCase().trim();
     
     // 검색어가 비어있으면 홈페이지로
     if (!searchTerm) {
         showHomePage();
         return;
     }
+    
+    // 최근 검색어에 저장
+    saveRecentSearch(searchInput.value.trim());
     
     // 전체 데이터베이스에서 검색
     const searchResults = [];
@@ -552,6 +808,7 @@ function showSearchResults(results, searchTerm) {
     
     itemsGrid.innerHTML = results.map(item => `
         <div class="item-card" data-id="${item.id}">
+            <button class="wishlist-heart" data-item-id="${item.id}">${isInWishlist(item.id) ? '♥' : '♡'}</button>
             ${item.image 
                 ? `<img src="${item.image}" alt="${item.name}" class="item-image">` 
                 : `<span class="item-emoji">${item.emoji || '🎁'}</span>`
@@ -562,6 +819,9 @@ function showSearchResults(results, searchTerm) {
             <p class="item-description">${item.description}</p>
         </div>
     `).join('');
+    
+    // 하트 버튼 이벤트 등록
+    attachWishlistHeartListeners();
     
     // 색상 변형이 있는 아이템에 클릭 이벤트 추가
     document.querySelectorAll('.item-card').forEach(card => {
@@ -576,7 +836,11 @@ function showSearchResults(results, searchTerm) {
         
         if (item && item.variants) {
             card.style.cursor = 'pointer';
-            card.addEventListener('click', () => showVariantModal(item));
+            card.addEventListener('click', (e) => {
+                // 하트 버튼 클릭시 모달 안 열리게
+                if (e.target.closest('.wishlist-heart')) return;
+                showVariantModal(item);
+            });
         }
     });
     
