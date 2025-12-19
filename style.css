@@ -529,6 +529,7 @@ body {
 .character-container {
     position: fixed;
     z-index: 1000;
+    pointer-events: none; /* 캐릭터가 클릭을 방해하지 않도록 설정 */
 }
 
 .character-left {
@@ -693,6 +694,68 @@ body {
     .detail-title {
         font-size: 1.5rem;
     }
+
+    /* 모바일 캐릭터 크기 축소 및 투명도 조정 */
+    .fixed-character-left {
+        width: 80px;
+        opacity: 0.7;
+        bottom: 10px;
+        left: 10px;
+        z-index: 500;
+    }
+
+    .fixed-character-right {
+        width: 100px;
+        opacity: 0.7;
+        bottom: 10px;
+        right: 10px;
+        z-index: 500;
+    }
+
+    /* 모바일 말풍선 크기 축소 */
+    .speech-bubble {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        max-width: 150px;
+        white-space: normal;
+        word-break: keep-all;
+    }
+
+    .speech-bubble::after {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #88d8b0;
+    }
+
+    .speech-bubble::before {
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 7px solid rgba(255, 255, 255, 0.9);
+    }
+
+    /* 모바일 위시리스트 버튼 위치 조정 */
+    .wishlist-btn {
+        top: auto;
+        bottom: 20px;
+        right: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        z-index: 1002;
+    }
+
+    .wishlist-icon {
+        font-size: 1.1rem;
+    }
+
+    .wishlist-text {
+        font-size: 0.85rem;
+    }
+
+    .wishlist-count {
+        width: 20px;
+        height: 20px;
+        font-size: 0.75rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -719,6 +782,32 @@ body {
     
     .item-name {
         font-size: 1.2rem;
+    }
+
+    /* 매우 작은 화면에서 캐릭터 더 축소 */
+    .fixed-character-left {
+        width: 60px;
+        opacity: 0.6;
+    }
+
+    .fixed-character-right {
+        width: 75px;
+        opacity: 0.6;
+    }
+
+    .speech-bubble {
+        font-size: 0.65rem;
+        padding: 6px 10px;
+        max-width: 120px;
+    }
+
+    /* 위시리스트 버튼 더 작게 */
+    .wishlist-btn {
+        padding: 6px 12px;
+    }
+
+    .wishlist-text {
+        display: none; /* 매우 작은 화면에서는 텍스트 숨김 */
     }
 }
 
